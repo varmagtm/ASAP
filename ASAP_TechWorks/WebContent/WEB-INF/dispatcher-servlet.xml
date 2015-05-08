@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd">
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.mindtree.controller" />
+		
+		<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="com/mindtree/properties/application" />
+	</bean>
+ 	<bean id="assessmentScheduleValidator" class="com.mindtree.validator.AssessmentScheduleValidator"/>
+	<bean id="problemValidator" class="com.mindtree.validator.ProblemValidator"></bean>
+	<bean id="testCaseValidator" class="com.mindtree.validator.TestCaseValidator"></bean>
+	<bean id="solutionValidator" class="com.mindtree.validator.SolutionValidator"></bean>
+	
+	<bean id="viewResolver"
+	      class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+          <property name="prefix">
+              <value>WEB-INF/jsp/</value>
+           </property>
+          <property name="suffix">
+             <value>.jsp</value>
+          </property>
+    </bean>
+
+</beans>

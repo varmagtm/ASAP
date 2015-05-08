@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.mindtree.model">
+	<class name="User" table="users" dynamic-update="true"
+		optimistic-lock="all">
+		<id name="userId" column="USER_ID" unsaved-value="0" type="integer"> 
+			<generator class="increment" />
+		</id>
+		<property name="username" column="USERNAME" not-null="true" unique="true" />
+		<property name="password" column="PASSWORD" length="50" type="string" />
+		<property name="ipAddress" column="IPADDRESS" length="15" type="string" />
+		<property name="isAdmin" column="IS_ADMIN" type="boolean"/>
+	</class>
+	<sql-query name="AUTHENTICATE_USER">select USERNAME, USER_ID, PASSWORD, ipAddress from users where USERNAME=:username and PASSWORD=:password</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd">
+	<context:annotation-config />
+
+	<!-- DriverManager configuration -->
+	<bean id="ds"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/asap" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+
+	<!--  Hibernate Session factory configuration -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="ds" />
+		<property name="configLocations">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>
+	</bean>
+
+	<!--  Transaction manager configuration -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!--  Transaction attributes configuration -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" no-rollback-for="java.lang.RuntimeException" />
+			<tx:method name="get*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!--  Transaction is applied to all methods in service layer -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice"
+			pointcut="execution(* com.mindtree.service.*.*(..))" />
+	</aop:config>
+
+	<bean name="authenticationDao" class="com.mindtree.dao.hibernateImpl.AuthenticationDaoImpl"
+		autowire="byType" />
+
+	<bean name="authenticationService" class="com.mindtree.service.AuthenticationServiceImpl"
+		autowire="byType" />
+
+	<bean name="problemDao" class="com.mindtree.dao.hibernateImpl.ProblemDaoImpl"
+		autowire="byType" />
+
+	<bean name="groupDao" class="com.mindtree.dao.hibernateImpl.GroupDaoImpl"
+		autowire="byType" />
+
+	<bean name="scheduleAssessmentDao"
+		class="com.mindtree.dao.hibernateImpl.ScheduleAssessmentDaoImpl"
+		autowire="byType" />
+
+	<bean name="adminService" class="com.mindtree.service.AdminServiceImpl"
+		autowire="byType" />
+
+	<bean id="candidateDao"
+		class="com.mindtree.dao.hibernateImpl.CandidateDaoHibernateImpl"
+		autowire="byType" />
+
+	<bean id="userDao" class="com.mindtree.dao.hibernateImpl.UserDaoImpl"
+		autowire="byType" />
+
+	<bean id="testCaseDao" class="com.mindtree.dao.hibernateImpl.TestCaseDaoImpl"
+		autowire="byType" />
+		
+	<bean id="assessmentReportDao" class="com.mindtree.dao.hibernateImpl.AssessmentReportDaoImpl"
+		autowire="byType" />
+		
+	<bean id="assessmentDao" class="com.mindtree.dao.hibernateImpl.AssessmentDaoHibernateImpl"
+		autowire="byType" />
+		
+		<bean id="testTakerService" class="com.mindtree.service.TestTakerServiceImpl"
+		autowire="byType" />
+		
+		<bean id="solutionDao" class="com.mindtree.dao.hibernateImpl.SolutionDaoHibernateImpl"
+		autowire="byType" />
+		
+		<bean id="scoreDao" class="com.mindtree.dao.hibernateImpl.ScoreDaoHibernateImpl" autowire="byType"></bean>
+		
+		
+
+</beans>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.mindtree.model">
+	<class name="AssessmentSchedule" table="ASSESSMENT_SCHEDULE"
+		dynamic-update="true" optimistic-lock="dirty">
+		<composite-id>
+			<key-many-to-one name="group" column="GROUP_ID"
+				class="Group"></key-many-to-one>
+			<key-many-to-one name="problem" column="PROBLEM_ID"
+				class="Problem"></key-many-to-one>
+		</composite-id>
+
+		<property name="scheduleId" column="SCHEDULE_ID" unique="true"/>
+		<property name="startDate" column="START_DATE" update="false" />
+		<property name="endDate" column="END_DATE" update="false" />
+		<property name="enable" column="ENABLE" type="boolean"></property>
+	</class>
+	<sql-query name="report">
+		SELECT C.NAME,S.SUBMITTED_ON,P.NAME,SC.TOTAL_SCORE
+		FROM CANDIDATE C,SOLUTIONS S,SCORES SC,PROBLEMS P
+		WHERE C.CANDIDATE_ID=SC.CANDIDATE_ID AND C.CANDIDATE_ID=S.CANDIDATE_ID
+		AND P.PROBLEM_ID=S.PROBLEM_ID AND P.PROBLEM_ID=:problemId
+	</sql-query>
+	
+	<sql-query name="reports">
+		SELECT C.NAME,S.SUBMITTED_ON,P.NAME,SC.TOTAL_SCORE
+		FROM CANDIDATE C,SOLUTIONS S,SCORES SC,PROBLEMS P
+		WHERE C.CANDIDATE_ID=SC.CANDIDATE_ID AND C.CANDIDATE_ID=S.CANDIDATE_ID
+		AND P.PROBLEM_ID=S.PROBLEM_ID
+	</sql-query>
+	<sql-query name="viewAssessments">
+		SELECT distinct A.PROBLEM_ID, A.START_DATE, A.END_DATE ,P.NAME
+		FROM ASSESSMENT_SCHEDULE A, CANDIDATE C, USERS U, GROUPS G ,PROBLEMS P
+		WHERE C.USER_ID=:userId AND C.GROUP_ID=G.GROUP_ID AND G.GROUP_ID=A.GROUP_ID  AND A.PROBLEM_ID=P.PROBLEM_ID AND A.ENABLE=TRUE
+	</sql-query>
+</hibernate-mapping>

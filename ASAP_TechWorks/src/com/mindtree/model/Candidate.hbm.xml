@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.mindtree.model">
+	<class name="Candidate" table="candidate" dynamic-update="true"
+		optimistic-lock="all">
+		<id name="candidateId" column="CANDIDATE_ID" unsaved-value="0" type="integer"> 
+			<generator class="increment" />
+		</id>
+		<property name="employeeId" column="EMPLOYEE_ID" type="string"  unique="true"/>
+		<property name="name" column="NAME" type="string"/>
+		<many-to-one name="user" class="User" column="USER_ID" cascade="all"/>
+		<many-to-one name="group" class="Group" column="GROUP_ID" cascade="all"></many-to-one>
+	</class>
+	<sql-query name="getCandidateFromUserId">
+	select candidate_id,employee_id,name,user_id,group_id from candidate where user_id = :p
+	</sql-query>
+</hibernate-mapping>

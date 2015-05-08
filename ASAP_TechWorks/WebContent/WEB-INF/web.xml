@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>ASAP</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	 <servlet>
+  	<servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- load-on-startup
+			1. If present, starts the servlet when the server starts.
+			2. load-on-startup can specify an (optional) integer value. 
+				If the value is 0 or greater, it indicates an order for servlets to be loaded,
+				 servlets with higher numbers get loaded after servlets with lower numbers.
+     -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+	 <servlet>
+	 	<description>
+	 	</description>
+	 	<display-name>Report</display-name>
+	 	<servlet-name>Report</servlet-name>
+	 	<servlet-class>
+	 	com.mindtree.controller.Report</servlet-class>
+	 </servlet>
+  
+  <servlet-mapping>
+ 	<servlet-name>dispatcher</servlet-name>
+    <url-pattern>*.action</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Report</servlet-name>
+  	<url-pattern>*.report</url-pattern>
+  </servlet-mapping>
+  
+ <context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>/WEB-INF/asap-hibernate.xml</param-value>
+  </context-param>
+  <listener>
+    <listener-class>
+      org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+  <filter>
+		<filter-name>hibernateFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>hibernateFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+
+</web-app>

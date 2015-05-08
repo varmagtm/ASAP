@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.mindtree.model">
+	<class name="TestCase" table="testcases" dynamic-update="true"
+		optimistic-lock="all">
+		<id name="testCaseId" column="TESTCASE_ID" unsaved-value="0" > 
+			<generator class="increment" />
+		</id>
+		<property name="testCaseDescription" column="DESCRIPTION" type="text"></property>
+		<property name="inputData" column="INPUT_DATA" type="text" />
+		<property name="expectedOutput" column="EXPECTED_OUTPUT" type="text" />
+		<property name="score" column="SCORE" type="double"></property>
+		<many-to-one name="problem" class="Problem" column="PROBLEM_ID"></many-to-one>
+	</class>
+</hibernate-mapping>

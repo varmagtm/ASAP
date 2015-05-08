@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.mindtree.model">
+	<class name="Problem" table="problems" dynamic-update="true"
+		optimistic-lock="all">
+		<id name="problemId" column="PROBLEM_ID" unsaved-value="0">
+			<generator class="increment" />
+		</id>
+		<property name="name" column="NAME" length="100" type="string"
+			unique="true" />
+		<property name="description" column="DESCRIPTION" type="text"/>
+		<property name="input" column="INPUT" type="text" />
+		<property name="output" column="OUTPUT" type="text" length="5000"/>
+		<property name="timeLimit" column="TIMELIMIT" type="int"></property>
+	</class>
+	<sql-query name="getProblemSQL">
+		SELECT P.DESCRIPTION
+		FROM PROBLEMS P,ASSESSMENT_SCHEDULE A,CANDIDATE C
+		WHERE P.PROBLEM_ID=A.PROBLEM_ID AND A.GROUP_ID=C.GROUP_ID
+		AND C.CANDIDATE_ID=:candidateId
+		AND (:time1 BETWEEN A.START_DATE AND A.END_DATE)
+	</sql-query>
+	<sql-query name="getProblem">
+		select P.problem_id,P.name from assessment_schedule A,problems P where
+		A.problem_id=P.problem_id and group_id = :id
+	</sql-query>
+	<sql-query name="update">
+		update assessment_schedule set enable = :? where group_id = :? and
+		problem_id = :?
+	</sql-query>
+</hibernate-mapping>

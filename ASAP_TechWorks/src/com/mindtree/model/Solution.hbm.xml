@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.mindtree.model">
+	<class name="Solution" table="solutions" dynamic-update="true"
+		optimistic-lock="all">
+		<composite-id>
+			<key-many-to-one name="candidate" column="CANDIDATE_ID" class="Candidate"></key-many-to-one>
+			<key-many-to-one name="problem" column="PROBLEM_ID" class="Problem"></key-many-to-one>
+		</composite-id>
+		
+		<property name="submitNumber" column="SUBMIT_NUMBER"/>
+		<property name="submittedOn" column="SUBMITTED_ON"/>
+		<property name="filename" column="FILENAME"></property>
+		<property name="sourceCode" column="SOURCE_CODE" type="text"></property>
+		<property name="compiler" column="COMPILER"></property>
+		<property name="complierState" column="COMPILER_STATE" ></property>
+		<property name="compilerError" column="COMPILER_ERROR" type="text"></property>
+	</class>
+</hibernate-mapping>
